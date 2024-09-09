@@ -4,6 +4,7 @@
 
 
 import os
+from natsort import natsorted
 
 
 from module.split_pdf import split_pdf_by_bookmarks
@@ -15,7 +16,7 @@ def processing_folder(input_folder, output_folder):
         os.makedirs(output_folder)
 
     for root, _, files in os.walk(input_folder):
-        for file in files:
+        for file in natsorted(files):
             if file.lower().endswith('.pdf'):
                 pdf_path = os.path.join('\\\\?\\', root, file)
                 pdf_output_dir = os.path.join('\\\\?\\',
