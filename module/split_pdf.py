@@ -1,3 +1,8 @@
+"""
+PDF를 3단계 북마크에 따라 분리하고 해당 페이지를 새 PDF 파일로 저장합니다
+"""
+
+
 import os
 import fitz
 
