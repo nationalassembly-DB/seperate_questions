@@ -10,11 +10,6 @@ import fitz
 from module.extract_bookmark import extract_bookmark
 
 
-def _init_filename(title, output_dir):
-    """파일명에 적합하지 않은 문자를 제거하고 안전한 파일명을 반환합니다"""
-    return os.path.join('\\\\?\\', output_dir, f"{title}.PDF")
-
-
 def split_pdf_by_bookmarks(pdf_path, output_dir):
     """북마크에 따라 PDF를 분할하고 저장합니다"""
     if not os.path.exists(output_dir):
