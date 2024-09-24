@@ -33,7 +33,7 @@ def create_excel(excel_list, excel_path, bookmark_list):
             ws.cell(row=last_row, column=6, value=item['name'])
             ws.cell(row=last_row, column=7,
                     value=person_dict[item['name']] if item['name'] in person_dict else None)
-            ws.cell(row=last_row, column=8, value='1')
+            ws.cell(row=last_row, column=8, value=1)
             ws.cell(row=last_row, column=9,
                     value=bookmark['split_bookmark_name'])
             ws.cell(row=last_row, column=10, value=bookmark['split_pdf_name'])
