@@ -14,7 +14,7 @@ from module.processing_folder import processing_folder
 
 def main():
     """북마크를 사용하여 주질의마다 PDF를 분할합니다"""
-    print("\n>>>>>>주질의 PDF 분할<<<<<<\n")
+    print("\n>>>>>>주질의 PDF 분할 및 의정자료 업로드 파일 생성<<<<<<\n")
     print("-"*24)
     input_path = input("작업할 폴더 경로를 입력하세요(종료는 0을 입력) : ").strip()
 
@@ -22,7 +22,7 @@ def main():
         return 0
 
     output_path = input(
-        "split된 PDF가 저장될폴더 경로를 입력하세요 : ").strip()
+        "split된 PDF, 엑셀을 저장할 폴더 경로를 입력하세요 : ").strip()
 
     if not os.path.isdir(input_path) and not os.path.isdir(output_path):
         print("폴더 경로를 다시 확인하세요")
