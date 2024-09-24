@@ -11,26 +11,32 @@ from openpyxl.styles import PatternFill
 
 
 from module.create_log import logging
-from module.create_path import _create_path
-from module.split_pdf import split_pdf_by_bookmarks
-from module.data import person_dict
+from module.data import committee_dict, organization_dict, person_dict
 
 
-def create_excel(excel_list, output_path, pre_upload_name):
+def create_excel(excel_list, excel_path, bookmark_list):
     """받은 데이터를 토대로 엑셀을 생성합니다"""
-    folder_path, excel_path = _create_path(output_path, pre_upload_name)
-
     wb = _load_excel(excel_path)
     ws = wb.active
 
     for item in excel_list:
-        last_row = ws.max_row + 1
-        ws.cell(row=last_row, column=1, value=item['cmt'])
-        ws.cell(row=last_row, column=2, value=item['org'])
-        ws.cell(row=last_row, column=7, value=item['name'])
-        ws.cell(row=last_row, column=8, value=item['question'])
-        ws.cell(row=last_row, column=9, value=item['realfile_name'])
-        ws.cell(row=last_row, column=10, value=item['real_path'])
+        for bookmark in bookmark_list:
+            last_row = ws.max_row + 1
+            ws.cell(row=last_row, column=2, value=item['org'])
+            ws.cell(row=last_row, column=3,
+                    value=organization_dict[item['org']] if item['org']
+                    in organization_dict else None)
+            ws.cell(row=last_row, column=4, value=item['cmt'])
+            ws.cell(row=last_row, column=5,
+                    value=committee_dict[item['cmt']] if item['cmt']
+                    in committee_dict else None)
+            ws.cell(row=last_row, column=6, value=item['name'])
+            ws.cell(row=last_row, column=7,
+                    value=person_dict[item['name']] if item['name'] in person_dict else None)
+            ws.cell(row=last_row, column=8, value='1')
+            ws.cell(row=last_row, column=9,
+                    value=bookmark['split_bookmark_name'])
+            ws.cell(row=last_row, column=10, value=bookmark['split_pdf_name'])
 
     wb.save(excel_path)
 
@@ -43,7 +49,7 @@ def _has_header(wb, path):
 
     if not header_exists:
         headers = ['일련번호', '기관명', '기관코드', '위원회명', '위원회 코드',
-                   '위원(의원)명', '위원(의원) 코드', '질의유형', '질의', '답변 책자 파일명', '기존 파일명']
+                   '위원(의원)명', '위원(의원) 코드', '질의유형', '질의', '답변 책자 파일명']
 
         for col_idx, header in enumerate(headers, start=1):
             ws.cell(row=1, column=col_idx, value=header)
