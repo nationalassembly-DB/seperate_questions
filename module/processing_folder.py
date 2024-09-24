@@ -7,19 +7,45 @@ import os
 from natsort import natsorted
 
 
+from module.create_log import logging
+from module.extract_bookmark import extract_bookmark
 from module.split_pdf import split_pdf_by_bookmarks
+from module.extract_name import _extract_cmt, _extract_org
+from module.data import committee_dict, organization_dict
 
 
-def processing_folder(input_folder, output_folder):
+def processing_folder(input_path, output_path):
     """폴더를 순회하면서 PDF 파일을 처리합니다"""
-    if not os.path.exists(output_folder):
-        os.makedirs(output_folder)
-
-    for root, _, files in os.walk(input_folder):
+    for root, _, files in os.walk(input_path):
         for file in natsorted(files):
-            if file.lower().endswith('.pdf'):
-                pdf_path = os.path.join('\\\\?\\', root, file)
-                pdf_output_dir = os.path.join('\\\\?\\',
-                                              output_folder, os.path.splitext(file)[0])
+            excel_list = []
 
-                split_pdf_by_bookmarks(pdf_path, pdf_output_dir)
+            if not file.lower().endswith('.pdf'):
+                continue
+            pdf_path = os.path.join('\\\\?\\', root, file)
+            pdf_output_dir = os.path.join('\\\\?\\',
+                                          output_path, os.path.splitext(file)[0])
+
+            org = _extract_cmt(file)
+            cmt = _extract_org(file)
+            upload_name = committee_dict[cmt] if cmt in committee_dict else "test_cmt" + \
+                organization_dict[org] if org in organization_dict else "test_org"
+
+            for item in extract_bookmark(pdf_path):
+                try:
+                    if len(item) <= 1 or item['level'] != 3:
+                        continue
+
+                    excel_list.append({
+                        "cmt": cmt,
+                        "org": org,
+                        "name": item['parent']['title'],
+                        "question": item['title'],
+                        "realfile_name": file,
+                        "upload_filename": upload_name
+                    })
+                except Exception as e:  # pylint: disable=W0703
+                    e = "PDF 북마크 추출 오류"
+                    logging(e, '', input_path)
+
+            split_pdf_by_bookmarks(pdf_path, pdf_output_dir)
