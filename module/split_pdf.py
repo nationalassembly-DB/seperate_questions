@@ -11,13 +11,15 @@ from module.extract_bookmark import extract_bookmark
 
 
 def split_pdf_by_bookmarks(pdf_path, output_dir):
-    """북마크에 따라 PDF를 분할하고 저장합니다"""
+    """북마크에 따라 PDF를 분할하고 저장합니다. 답변 책자 파일명과 질의를 return합니다"""
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
     doc = fitz.open(pdf_path)
     bookmarks = extract_bookmark(pdf_path)
-    filename_tmp = 1
+
+    split_pdf_list = []
+    i = 1
 
     for bookmark in bookmarks:
         if bookmark['level'] == 3:
@@ -38,9 +40,17 @@ def split_pdf_by_bookmarks(pdf_path, output_dir):
             new_pdf.set_toc(new_toc_list)
 
             output_path = os.path.join(
-                '\\\\?\\', output_dir, f"{filename_tmp}.PDF")
+                '\\\\?\\', output_dir, f"{os.path.basename(output_dir)}_{str(i).zfill(4)}.PDF")
             new_pdf.save(output_path)
             new_pdf.close()
-            filename_tmp += 1
+
+            split_pdf_list.append({
+                "split_pdf_name": os.path.splitext(os.path.basename(output_path))[0],
+                "split_bookmark_name": bookmark['title']
+            })
+
+            i += 1
 
     doc.close()
+
+    return split_pdf_list
