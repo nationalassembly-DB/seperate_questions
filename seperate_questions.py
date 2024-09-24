@@ -1,4 +1,7 @@
 """
+seperate_questions.py
+
+main()
 북마크에서 주질의를 찾아내 각 pdf 파일로 split 합니다. 
 """
 
@@ -25,6 +28,11 @@ def main():
         print("폴더 경로를 다시 확인하세요")
         return main()
 
+    if not os.path.exists(output_path):
+        os.makedirs(output_path)
+
+    print("-"*24)
+    print("\n작업중입니다. 데이터가 손상될 수 있으니 완료까지 수정하지 마세요.\n")
     processing_folder(input_path, output_path)
     print("-"*24)
     print(f"{output_path}에 분할된 PDF가 저장되었습니다.")
