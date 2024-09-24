@@ -37,9 +37,6 @@ def split_pdf_by_bookmarks(pdf_path, output_dir):
             new_toc_list = [[1, bookmark['title'], 0]]
             new_pdf.set_toc(new_toc_list)
 
-            # 파일명을 북마크로 저장할경우 아래 주석 해제
-            # output_path = _init_filename(
-            #     bookmark['title'], output_dir)
             output_path = os.path.join(
                 '\\\\?\\', output_dir, f"{filename_tmp}.PDF")
             new_pdf.save(output_path)
