@@ -1,5 +1,5 @@
 """
-폴더를 순회하면서 pdf파일이 나타날 경우 pdf 분리 작업을 합니다
+폴더를 순회하면서 pdf파일이 나타날 경우 pdf 분리 작업 및 엑셀 생성 작업을 합니다
 """
 
 
@@ -9,8 +9,10 @@ from natsort import natsorted
 
 from module.create_log import logging
 from module.create_excel import create_excel
+from module.create_path import _create_path
 from module.extract_bookmark import extract_bookmark
 from module.extract_name import _extract_cmt, _extract_org
+from module.split_pdf import split_pdf_by_bookmarks
 from module.data import committee_dict, organization_dict
 
 
@@ -26,9 +28,9 @@ def processing_folder(input_path, output_path):
 
             cmt = _extract_cmt(file)
             org = _extract_org(file)
-            upload_name = committee_dict[cmt] if cmt in committee_dict else "test_cmt" + \
-                '_' + \
-                organization_dict[org] if org in organization_dict else "test_org" + '_'
+            up_name = (str(committee_dict[cmt]) if cmt in committee_dict else "test_cmt") + '_' + \
+                (organization_dict[org]
+                 if org in organization_dict else "test_org")
 
             for item in extract_bookmark(pdf_path):
                 try:
@@ -46,4 +48,8 @@ def processing_folder(input_path, output_path):
                     e = "PDF 북마크 추출 오류"
                     logging(e, '', input_path)
 
-            create_excel(excel_list, output_path, upload_name)
+            folder_path, excel_path = _create_path(
+                output_path, up_name)
+
+            create_excel(excel_list, excel_path,
+                         split_pdf_by_bookmarks(pdf_path, folder_path))
