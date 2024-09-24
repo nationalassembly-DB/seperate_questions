@@ -32,7 +32,7 @@ def main():
         os.makedirs(output_path)
 
     print("-"*24)
-    print("\n작업중입니다. 데이터가 손상될 수 있으니 완료까지 수정하지 마세요.\n")
+    print("\n작업중입니다. 데이터가 손상될 수 있으니 데이터를 수정하지 마세요.\n")
     processing_folder(input_path, output_path)
     print("-"*24)
     print(f"{output_path}에 분할된 PDF가 저장되었습니다.")
