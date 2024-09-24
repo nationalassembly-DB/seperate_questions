@@ -8,8 +8,8 @@ from natsort import natsorted
 
 
 from module.create_log import logging
+from module.create_excel import create_excel
 from module.extract_bookmark import extract_bookmark
-from module.split_pdf import split_pdf_by_bookmarks
 from module.extract_name import _extract_cmt, _extract_org
 from module.data import committee_dict, organization_dict
 
@@ -23,13 +23,12 @@ def processing_folder(input_path, output_path):
             if not file.lower().endswith('.pdf'):
                 continue
             pdf_path = os.path.join('\\\\?\\', root, file)
-            pdf_output_dir = os.path.join('\\\\?\\',
-                                          output_path, os.path.splitext(file)[0])
 
-            org = _extract_cmt(file)
-            cmt = _extract_org(file)
+            cmt = _extract_cmt(file)
+            org = _extract_org(file)
             upload_name = committee_dict[cmt] if cmt in committee_dict else "test_cmt" + \
-                organization_dict[org] if org in organization_dict else "test_org"
+                '_' + \
+                organization_dict[org] if org in organization_dict else "test_org" + '_'
 
             for item in extract_bookmark(pdf_path):
                 try:
@@ -41,11 +40,10 @@ def processing_folder(input_path, output_path):
                         "org": org,
                         "name": item['parent']['title'],
                         "question": item['title'],
-                        "realfile_name": file,
-                        "upload_filename": upload_name
+                        "realfile_name": file
                     })
                 except Exception as e:  # pylint: disable=W0703
                     e = "PDF 북마크 추출 오류"
                     logging(e, '', input_path)
 
-            split_pdf_by_bookmarks(pdf_path, pdf_output_dir)
+            create_excel(excel_list, output_path, upload_name)
