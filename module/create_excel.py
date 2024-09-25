@@ -14,29 +14,29 @@ from module.create_log import logging
 from module.data import committee_dict, organization_dict, person_dict
 
 
-def create_excel(excel_list, excel_path, bookmark_list):
+def create_excel(excel_dict, excel_path, bookmark_list):
     """받은 데이터를 토대로 엑셀을 생성합니다"""
     wb = _load_excel(excel_path)
     ws = wb.active
 
-    for item in excel_list:
-        for bookmark in bookmark_list:
-            last_row = ws.max_row + 1
-            ws.cell(row=last_row, column=2, value=item['org'])
-            ws.cell(row=last_row, column=3,
-                    value=organization_dict[item['org']] if item['org']
-                    in organization_dict else None)
-            ws.cell(row=last_row, column=4, value=item['cmt'])
-            ws.cell(row=last_row, column=5,
-                    value=committee_dict[item['cmt']] if item['cmt']
-                    in committee_dict else None)
-            ws.cell(row=last_row, column=6, value=item['name'])
-            ws.cell(row=last_row, column=7,
-                    value=person_dict[item['name']] if item['name'] in person_dict else None)
-            ws.cell(row=last_row, column=8, value=1)
-            ws.cell(row=last_row, column=9,
-                    value=bookmark['split_bookmark_name'])
-            ws.cell(row=last_row, column=10, value=bookmark['split_pdf_name'])
+    for bookmark in bookmark_list:
+        last_row = ws.max_row + 1
+        ws.cell(row=last_row, column=2, value=excel_dict['org'])
+        ws.cell(row=last_row, column=3,
+                value=organization_dict[excel_dict['org']] if excel_dict['org']
+                in organization_dict else None)
+        ws.cell(row=last_row, column=4, value=excel_dict['cmt'])
+        ws.cell(row=last_row, column=5,
+                value=committee_dict[excel_dict['cmt']] if excel_dict['cmt']
+                in committee_dict else None)
+        ws.cell(row=last_row, column=6, value=excel_dict['name'])
+        ws.cell(row=last_row, column=7,
+                value=person_dict[excel_dict['name']] if excel_dict['name']
+                in person_dict else None)
+        ws.cell(row=last_row, column=8, value=1)
+        ws.cell(row=last_row, column=9,
+                value=bookmark['split_bookmark_name'])
+        ws.cell(row=last_row, column=10, value=bookmark['split_pdf_name'])
 
     wb.save(excel_path)
 

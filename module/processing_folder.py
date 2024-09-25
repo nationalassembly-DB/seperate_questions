@@ -20,7 +20,7 @@ def processing_folder(input_path, output_path):
     """폴더를 순회하면서 PDF 파일을 처리합니다"""
     for root, _, files in os.walk(input_path):
         for file in natsorted(files):
-            excel_list = []
+            excel_dict = {}
 
             if not file.lower().endswith('.pdf'):
                 continue
@@ -36,14 +36,11 @@ def processing_folder(input_path, output_path):
                 try:
                     if len(item) <= 1 or item['level'] != 3:
                         continue
-
-                    excel_list.append({
-                        "cmt": cmt,
-                        "org": org,
-                        "name": item['parent']['title'],
-                        "question": item['title'],
-                        "realfile_name": file
-                    })
+                    excel_dict['cmt'] = cmt
+                    excel_dict['org'] = org
+                    excel_dict['name'] = item['parent']['title']
+                    excel_dict['question'] = item['title']
+                    excel_dict['realfile_name'] = file
                 except Exception as e:  # pylint: disable=W0703
                     e = "PDF 북마크 추출 오류"
                     logging(e, '', input_path)
@@ -51,5 +48,5 @@ def processing_folder(input_path, output_path):
             folder_path, excel_path = _create_path(
                 output_path, up_name)
 
-            create_excel(excel_list, excel_path,
+            create_excel(excel_dict, excel_path,
                          split_pdf_by_bookmarks(pdf_path, folder_path))
