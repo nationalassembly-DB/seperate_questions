@@ -19,7 +19,7 @@ def split_pdf_by_bookmarks(pdf_path, output_dir):
     bookmarks = extract_bookmark(pdf_path)
 
     split_pdf_list = []
-    i = 1
+    i = 0
 
     for bookmark in bookmarks:
         if bookmark['level'] == 3:
