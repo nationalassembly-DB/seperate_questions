@@ -22,6 +22,7 @@ def create_excel(excel_list, excel_path, bookmark_list):
     last_row = 2
 
     for item in excel_list:
+        ws.cell(row=last_row, column=1, value=ws.max_row)
         ws.cell(row=last_row, column=2, value=item['org'])
         ws.cell(row=last_row, column=3,
                 value=organization_dict[item['org']] if item['org']
