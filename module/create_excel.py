@@ -42,8 +42,8 @@ def create_excel(excel_list, excel_path, bookmark_list):
     for bookmark in bookmark_list:
         ws.cell(row=last_row, column=9,
                 value=bookmark['split_bookmark_name'])
-        ws.cell(row=last_row, column=10, value=f"{
-                bookmark['split_pdf_name']}.PDF")
+        ws.cell(row=last_row, column=10,
+                value=f"{bookmark['split_pdf_name']}.PDF")
         last_row += 1
 
     wb.save(excel_path)
