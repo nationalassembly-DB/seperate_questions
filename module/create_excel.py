@@ -53,8 +53,8 @@ def create_excel(excel_list, excel_path, bookmark_list, output_path):
                 value=f"{bookmark['split_pdf_name']}.PDF")
         ws2.cell(row=ws2_last_row, column=1, value=cmt)
         ws2.cell(row=ws2_last_row, column=2, value=org)
-        ws2.cell(row=ws2_last_row, column=3, value=f"{
-                 bookmark['split_pdf_name']}.PDF")
+        ws2.cell(row=ws2_last_row, column=3,
+                 value=f"{bookmark['split_pdf_name']}.PDF")
         ws2.cell(row=ws2_last_row, column=4, value=bookmark['real_file_name'])
 
         last_row += 1
