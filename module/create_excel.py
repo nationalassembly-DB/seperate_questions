@@ -51,6 +51,7 @@ def create_excel(excel_list, excel_path, bookmark_list, output_path):
                 value=bookmark['split_bookmark_name'])
         ws.cell(row=last_row, column=10,
                 value=f"{bookmark['split_pdf_name']}.PDF")
+        # 전체 리스트에 데이터 추가
         ws2.cell(row=ws2_last_row, column=1, value=cmt)
         ws2.cell(row=ws2_last_row, column=2, value=org)
         ws2.cell(row=ws2_last_row, column=3,
@@ -61,6 +62,7 @@ def create_excel(excel_list, excel_path, bookmark_list, output_path):
         ws2_last_row += 1
         filename = bookmark['real_file_name']
 
+    # 전체 리스트에 엑셀 파일을 넣기 위한 작업
     ws2.cell(row=ws2_last_row, column=1, value=cmt)
     ws2.cell(row=ws2_last_row, column=2, value=org)
     ws2.cell(row=ws2_last_row, column=3, value=os.path.basename(excel_path))
