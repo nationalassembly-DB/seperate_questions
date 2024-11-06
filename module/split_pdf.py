@@ -10,7 +10,7 @@ import fitz
 from module.extract_bookmark import extract_bookmark
 
 
-def split_pdf_by_bookmarks(pdf_path, output_dir):
+def split_pdf_by_bookmarks(pdf_path, output_dir, filename):
     """북마크에 따라 PDF를 분할하고 저장합니다. 답변 책자 파일명과 질의를 return합니다"""
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
@@ -46,7 +46,8 @@ def split_pdf_by_bookmarks(pdf_path, output_dir):
 
             split_pdf_list.append({
                 "split_pdf_name": os.path.splitext(os.path.basename(output_path))[0],
-                "split_bookmark_name": bookmark['title']
+                "split_bookmark_name": bookmark['title'],
+                "real_file_name": filename
             })
 
             i += 1

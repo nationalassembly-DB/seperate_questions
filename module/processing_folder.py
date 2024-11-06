@@ -52,4 +52,4 @@ def processing_folder(input_path, output_path):
                 output_path, up_name)
 
             create_excel(excel_list, excel_path,
-                         split_pdf_by_bookmarks(pdf_path, folder_path))
+                         split_pdf_by_bookmarks(pdf_path, folder_path, file), output_path)
