@@ -4,8 +4,6 @@ extact_name.py
 위원회와 피감기관을 파일명에서 추출합니다
 """
 
-import re
-
 
 def _extract_cmt(filename):
     # 파일명에서 위원회 이름 추출
@@ -22,15 +20,23 @@ def _extract_cmt(filename):
 
 
 def _extract_org(filename):
-    # 파일명에서 피감기관 이름 추출
-    org_matches = re.findall(r'\(([^)]+)\)', filename)
-    if org_matches:
-        org = org_matches[-1]
-        if org == '2':
-            org = org_matches[-2]
-        if str(org).endswith('(주'):
-            org = str(org).replace('(주', '(주)')
-    else:
+    # 파일명에서 가장 바깥 괄호를 기준으로 기관 이름 추출
+    stack = []
+    start = None
+    org = ""
+
+    for i, char in enumerate(filename):
+        if char == '(':
+            stack.append(i)
+            if len(stack) == 1:
+                start = i
+        elif char == ')':
+            stack.pop()
+            if len(stack) == 0:
+                org = filename[start + 1:i]
+                break
+
+    if not org:
         org = ""
 
     return org
