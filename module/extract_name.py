@@ -20,23 +20,22 @@ def _extract_cmt(filename):
 
 
 def _extract_org(filename):
-    # 파일명에서 가장 바깥 괄호를 기준으로 기관 이름 추출
+    # 파일명에서 가장 바깥 괄호를 기준으로 기관 이름 추출 (뒤에서부터 탐색)
     stack = []
-    start = None
+    end = None
     org = ""
 
-    for i, char in enumerate(filename):
-        if char == '(':
+    for i in range(len(filename) - 1, -1, -1):
+        char = filename[i]
+
+        if char == ')':
             stack.append(i)
             if len(stack) == 1:
-                start = i
-        elif char == ')':
+                end = i
+        elif char == '(':
             stack.pop()
             if len(stack) == 0:
-                org = filename[start + 1:i]
+                org = filename[i + 1:end]
                 break
 
-    if not org:
-        org = ""
-
-    return org
+    return org if org else ""
