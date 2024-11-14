@@ -12,6 +12,7 @@ from module.create_excel import create_excel
 from module.create_path import _create_path
 from module.extract_bookmark import extract_bookmark
 from module.extract_name import _extract_cmt, _extract_org
+from module.split_file import split_pdf_folder
 from module.split_pdf import split_pdf_by_bookmarks
 from module.data import committee_dict, organization_dict
 
@@ -51,5 +52,7 @@ def processing_folder(input_path, output_path):
             folder_path, excel_path = _create_path(
                 output_path, up_name)
 
-            create_excel(excel_list, excel_path,
-                         split_pdf_by_bookmarks(pdf_path, folder_path, file), output_path)
+            if (create_excel(excel_list, excel_path, split_pdf_by_bookmarks(
+                    pdf_path, folder_path, file), output_path) < 500):
+                continue
+            split_pdf_folder(folder_path)

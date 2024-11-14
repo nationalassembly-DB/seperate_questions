@@ -14,7 +14,7 @@ from module.create_log import logging
 from module.data import committee_dict, organization_dict, person_dict
 
 
-def create_excel(excel_list, excel_path, bookmark_list, output_path):
+def create_excel(excel_list, excel_path, bookmark_list, output_path) -> int:
     """받은 데이터를 토대로 엑셀을 생성합니다"""
     wb = _load_excel(excel_path)
     ws = wb.active
@@ -70,6 +70,8 @@ def create_excel(excel_list, excel_path, bookmark_list, output_path):
 
     wb.save(excel_path)
     wb2.save(os.path.join(output_path, 'total_list.xlsx'))
+
+    return len(bookmark_list)
 
 
 def _has_header(wb, path, select=1):
