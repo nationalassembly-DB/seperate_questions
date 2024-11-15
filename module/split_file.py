@@ -19,6 +19,7 @@ def split_pdf_folder(input_folder_path):  # pylint: disable = R0914
         '.xlsx', '.xls']]
 
     if len(pdf_files) < 499:
+        print(f"{input_folder_path} : 파일 총 갯수 500개 미만")
         return
 
     base_folder_name = input_folder_path.name
@@ -55,4 +56,4 @@ def split_pdf_folder(input_folder_path):  # pylint: disable = R0914
             dest_path = new_folder_path / pdf_file.name
             shutil.move(str(pdf_file), str(dest_path))
 
-    print("PDF 파일이 성공적으로 나눠졌습니다.")
+    print(f"{input_folder_path} : 500개 이상 파일이 성공적으로 나눠졌습니다.")
