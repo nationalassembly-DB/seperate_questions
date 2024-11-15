@@ -18,7 +18,7 @@ def split_pdf_folder(input_folder_path):  # pylint: disable = R0914
     excel_files = [f for f in all_files if f.is_file() and f.suffix.lower() in [
         '.xlsx', '.xls']]
 
-    if len(pdf_files) < 500:
+    if len(pdf_files) < 499:
         return
 
     base_folder_name = input_folder_path.name
